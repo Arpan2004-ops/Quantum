@@ -1,0 +1,4 @@
+experiment,input_size,qubits,max_absolute_error,validation,classical_seconds,statevector_seconds
+experiment_1,2,1,0,PASS,0.02497680,0.00233550
+experiment_2,4,2,1.40800392604e-16,PASS,0.00005870,0.00280350
+experiment_3,8,3,5.0267485386e-16,PASS,0.00006790,0.00464830

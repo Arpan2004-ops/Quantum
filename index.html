@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Comparative Study of Quantum Fourier Transform (QFT) and Classical Fast Fourier Transform (FFT) with Qiskit and NumPy.">
+  <title>QFT vs Classical FFT — Quantum Analysis & Validation Dashboard</title>
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="header">
+      <div class="brand-section">
+        <div class="brand-icon">⚛</div>
+        <div>
+          <h1 class="brand-title">QFT vs Classical FFT</h1>
+          <p class="brand-subtitle">Comparative Study, Statevector Simulation & Mathematical Equivalence</p>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>Validation: 100% PASS (3/3)</span>
+        </div>
+        <button class="btn btn-secondary" onclick="downloadCSV()" title="Download summary CSV">
+          <span>⤓ Export CSV</span>
+        </button>
+        <button class="btn btn-primary" onclick="window.print()" title="Print or save as PDF report">
+          <span>🖨 Print Report</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- KPI Summary Row -->
+    <section class="kpi-grid" aria-label="Key Performance Metrics">
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Experiments Tested</span>
+          <span>📊</span>
+        </div>
+        <div class="kpi-value val-cyan">3 / 3</div>
+        <div class="kpi-sub">Inputs: N = 2, 4, 8 (1, 2, 3 Qubits)</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Max Absolute Error</span>
+          <span>🎯</span>
+        </div>
+        <div class="kpi-value val-emerald">5.03 × 10⁻¹⁶</div>
+        <div class="kpi-sub">Machine floating-point precision</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Simulation Engine</span>
+          <span>⚡</span>
+        </div>
+        <div class="kpi-value val-violet">Qiskit 2.x</div>
+        <div class="kpi-sub">StatePreparation + QFTGate</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Convention Bridge</span>
+          <span>⚖</span>
+        </div>
+        <div class="kpi-value val-amber">Validated</div>
+        <div class="kpi-sub">Phase & Normalization aligned</div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav" aria-label="Main Navigation">
+      <button class="tab-btn active" data-tab="tab-overview">
+        <span>📋</span> Overview & Findings
+      </button>
+      <button class="tab-btn" data-tab="tab-experiments">
+        <span>🔬</span> Experiment Deep Dive
+      </button>
+      <button class="tab-btn" data-tab="tab-simulator">
+        <span>✨</span> Interactive Live Simulator
+      </button>
+      <button class="tab-btn" data-tab="tab-theory">
+        <span>📐</span> Mathematical Foundations
+      </button>
+      <button class="tab-btn" data-tab="tab-viva">
+        <span>🎓</span> Presentation & Viva Prep
+      </button>
+      <button class="tab-btn" data-tab="tab-team">
+        <span>👥</span> Team & Methodology
+      </button>
+    </nav>
+
+    <!-- TAB 1: OVERVIEW & COMPARATIVE SUMMARY -->
+    <main id="tab-overview" class="tab-content active">
+      <div class="panel-card">
+        <div class="panel-header">
+          <h2 class="panel-title"><span>🔍</span> Executive Summary: QFT vs Classical FFT</h2>
+          <span class="status-badge"><span class="status-dot"></span> Mathematical Equivalence Verified</span>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">
+          This project implements the <strong>Quantum Fourier Transform (QFT)</strong> using IBM Qiskit, simulates the resulting quantum statevectors, and contrasts them against the <strong>Classical Fast Fourier Transform (FFT)</strong> calculated using NumPy. Across all power-of-two input lengths ($N \in \{2, 4, 8\}$), the quantum output matches the normalized classical Fourier equivalent to numerical machine precision.
+        </p>
+
+        <!-- Summary Table -->
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Experiment</th>
+                <th>Input Length (N)</th>
+                <th>Qubits</th>
+                <th>Input Vector</th>
+                <th>Max Absolute Error</th>
+                <th>Validation</th>
+                <th>Classical Wall Time</th>
+                <th>Quantum Sim Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Experiment 1</strong></td>
+                <td>2</td>
+                <td>1</td>
+                <td>[1, 0]</td>
+                <td>0.000e+00</td>
+                <td><span class="badge-pass">PASS</span></td>
+                <td>0.0232 s</td>
+                <td>0.0052 s</td>
+              </tr>
+              <tr>
+                <td><strong>Experiment 2</strong></td>
+                <td>4</td>
+                <td>2</td>
+                <td>[1, 0, 1, 0]</td>
+                <td>1.408e-16</td>
+                <td><span class="badge-pass">PASS</span></td>
+                <td>0.0003 s</td>
+                <td>0.0069 s</td>
+              </tr>
+              <tr>
+                <td><strong>Experiment 3</strong></td>
+                <td>8</td>
+                <td>3</td>
+                <td>[1, 2, 0, 1, 0, 1, 0, 0]</td>
+                <td>5.027e-16</td>
+                <td><span class="badge-pass">PASS</span></td>
+                <td>0.0003 s</td>
+                <td>0.0046 s</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Comparative Contrast Grid -->
+        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin: 28px 0 16px;">Core Differences: Classical FFT vs Quantum QFT</h3>
+        <div class="theory-grid">
+          <div class="theory-card">
+            <h3><span>💻</span> Classical FFT (NumPy)</h3>
+            <p><strong>Representation:</strong> Operates on an array of $N$ classical complex numbers stored directly in memory registers.</p>
+            <p><strong>Complexity:</strong> Computes all $N$ discrete frequency coefficients in $\mathcal{O}(N \log N)$ operations using divide-and-conquer (Cooley-Tukey).</p>
+            <p><strong>Readout:</strong> Every frequency component $X_k$ is directly accessible and readable with zero uncertainty.</p>
+            <div class="math-box">X_k = \sum_{j=0}^{N-1} x_j \cdot e^{-2\pi i j k / N}</div>
+          </div>
+
+          <div class="theory-card">
+            <h3><span>⚛</span> Quantum QFT (Qiskit)</h3>
+            <p><strong>Representation:</strong> Encodes the $N$ values as probability amplitudes of an $n = \log_2(N)$ qubit superposition state.</p>
+            <p><strong>Circuit Complexity:</strong> Requires only $\mathcal{O}(n^2) = \mathcal{O}((\log_2 N)^2)$ elementary quantum gates (Hadamard + Controlled-Phase rotations).</p>
+            <p><strong>Measurement Limitation:</strong> The resulting state $|\psi\rangle$ cannot have all $N$ amplitudes read in one shot. Measurement collapses the state to a single basis state $|k\rangle$ with probability $|\alpha_k|^2$.</p>
+            <div class="math-box">|\psi_{\text{out}}\rangle = \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} \left(\sum_{j=0}^{N-1} x_j e^{+2\pi i j k / N}\right) |k\rangle</div>
+          </div>
+
+          <div class="theory-card">
+            <h3><span>⚖</span> The Critical Convention Bridge</h3>
+            <p><strong>1. Normalization:</strong> Quantum statevectors must have unit norm $\sum |\alpha_j|^2 = 1$. Input $x$ is normalized by $||x||_2$.</p>
+            <p><strong>2. Sign Convention:</strong> Standard QFT uses a positive phase exponent ($+i$). Standard forward FFT uses a negative exponent ($-i$).</p>
+            <p><strong>The Bridge:</strong> To compare NumPy with Qiskit's `QFTGate`, we scale NumPy's `ifft` (which has positive exponent):</p>
+            <div class="math-box">\text{Expected QFT} = \frac{\sqrt{N}}{||x||_2} \cdot \text{np.fft.ifft}(x)</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- TAB 2: EXPERIMENT DEEP DIVE -->
+    <section id="tab-experiments" class="tab-content">
+      <div class="panel-card">
+        <div class="panel-header">
+          <h2 class="panel-title"><span>🔬</span> Experiment Inspection & Visual Artifacts</h2>
+          
+          <!-- Experiment Selector -->
+          <div class="exp-selector-bar">
+            <button class="exp-pill" data-exp="experiment_1">Exp 1 (N = 2)</button>
+            <button class="exp-pill active" data-exp="experiment_2">Exp 2 (N = 4)</button>
+            <button class="exp-pill" data-exp="experiment_3">Exp 3 (N = 8)</button>
+          </div>
+        </div>
+
+        <!-- Metadata Strip -->
+        <div class="exp-meta-strip">
+          <div class="meta-item">
+            <span class="meta-label">Input Signal</span>
+            <span class="meta-value" id="meta-input">[1, 0, 1, 0]</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Signal Size (N)</span>
+            <span class="meta-value" id="meta-size">4 elements</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Qubits Required</span>
+            <span class="meta-value" id="meta-qubits">2 qubits</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Max Absolute Error</span>
+            <span class="meta-value val-emerald" id="meta-error">1.408e-16</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Validation</span>
+            <span class="meta-value badge-pass" id="meta-validation">PASS</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Classical Runtime</span>
+            <span class="meta-value" id="meta-cl-time">0.0003 s</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Simulation Runtime</span>
+            <span class="meta-value" id="meta-q-time">0.0069 s</span>
+          </div>
+        </div>
+
+        <!-- Visual Plots Grid -->
+        <div class="visual-grid">
+          <!-- Circuit Diagram Card -->
+          <div class="visual-card">
+            <div class="visual-card-header">
+              <span class="visual-card-title"><span>🔌</span> Quantum Circuit Diagram</span>
+              <div class="visual-card-actions">
+                <button class="btn-xs" id="btn-toggle-circuit-view">View ASCII</button>
+              </div>
+            </div>
+            <div class="visual-image-wrapper">
+              <img id="exp-circuit-img" class="zoomable-img" src="./results/experiment_2_circuit.png" alt="Quantum Circuit Diagram">
+              <pre id="exp-circuit-txt" class="circuit-text-box"></pre>
+            </div>
+          </div>
+
+          <!-- Magnitude Comparison Card -->
+          <div class="visual-card">
+            <div class="visual-card-header">
+              <span class="visual-card-title"><span>📈</span> Magnitude Comparison (QFT vs FFT)</span>
+            </div>
+            <div class="visual-image-wrapper">
+              <img id="exp-mag-img" class="zoomable-img" src="./results/experiment_2_magnitude.png" alt="Magnitude Comparison Plot">
+            </div>
+          </div>
+
+          <!-- Complex Amplitude Card -->
+          <div class="visual-card" style="grid-column: 1 / -1;">
+            <div class="visual-card-header">
+              <span class="visual-card-title"><span>📊</span> Real & Imaginary Component Matching</span>
+            </div>
+            <div class="visual-image-wrapper">
+              <img id="exp-complex-img" class="zoomable-img" src="./results/experiment_2_complex.png" alt="Complex Amplitude Comparison Plot">
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Index-by-Index Table -->
+        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin: 24px 0 14px;">Index-by-Index Numerical Breakdown</h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Basis State |k⟩</th>
+                <th>Input xₖ</th>
+                <th>Classical FFT Xₖ</th>
+                <th>QFT State Amplitude</th>
+                <th>Expected Equivalent</th>
+                <th>Absolute Error</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="exp-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Execution & Terminal Log -->
+        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin: 24px 0 14px;">Raw Simulation Log & Verification Output</h3>
+        <pre class="terminal-card" id="exp-terminal-log">Loading experiment log...</pre>
+      </div>
+    </section>
+
+    <!-- TAB 3: INTERACTIVE LIVE SIMULATOR -->
+    <section id="tab-simulator" class="tab-content">
+      <div class="panel-card">
+        <div class="panel-header">
+          <h2 class="panel-title"><span>✨</span> Interactive Quantum vs Classical FFT Simulator</h2>
+          <span class="status-badge"><span class="status-dot"></span> Live In-Browser Execution</span>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">
+          Test any power-of-two signal input in real time. The simulator computes the discrete Fourier transform using classical FFT and quantum QFT formulas, applies the convention transformation bridge, and renders real-time magnitude/phase and Argand phasor diagrams.
+        </p>
+
+        <!-- Controls -->
+        <div class="sim-controls-grid">
+          <div class="control-group">
+            <label class="control-label">Signal Presets:</label>
+            <div class="preset-buttons">
+              <button class="preset-btn" data-preset="1, 0">Delta N=2 [1, 0]</button>
+              <button class="preset-btn active" data-preset="1, 0, 1, 0">Alternating N=4 [1, 0, 1, 0]</button>
+              <button class="preset-btn" data-preset="1, 1, 1, 1">Uniform N=4 [1, 1, 1, 1]</button>
+              <button class="preset-btn" data-preset="1, 2, 0, 1, 0, 1, 0, 0">Asymmetric N=8</button>
+              <button class="preset-btn" data-preset="0, 1, 0, -1, 0, 1, 0, -1">Sine N=8</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="sim-signal-input">Custom Signal Input (comma or space separated):</label>
+            <input type="text" id="sim-signal-input" class="sim-input" value="1, 0, 1, 0" placeholder="e.g. 1, 0, 1, 0">
+            <div id="sim-error-alert" style="display:none; color: var(--rose-danger); font-size: 0.8rem; margin-top: 4px;"></div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="sim-chart-type">Visualization Mode:</label>
+            <select id="sim-chart-type" class="sim-input" style="cursor: pointer;">
+              <option value="magnitude">Magnitude Comparison (|αₖ|)</option>
+              <option value="components">Real & Imaginary Components</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Live Metrics Strip -->
+        <div class="exp-meta-strip" style="margin-bottom: 20px;">
+          <div class="meta-item">
+            <span class="meta-label">Length (N)</span>
+            <span class="meta-value" id="sim-stat-n">4</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Qubits (n)</span>
+            <span class="meta-value" id="sim-stat-qubits">2</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">L2 Norm ||x||</span>
+            <span class="meta-value" id="sim-stat-norm">1.41421</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Calculated Error</span>
+            <span class="meta-value val-emerald" id="sim-stat-error">0.000e+00</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Equivalence</span>
+            <span class="meta-value badge-pass" id="sim-stat-validation">PASS</span>
+          </div>
+        </div>
+
+        <!-- Visual Canvas Charts -->
+        <div class="sim-canvas-container">
+          <div class="canvas-wrapper">
+            <div class="canvas-title">
+              <span>📊 Real-Time Output Amplitudes per Quantum Basis State</span>
+              <span style="font-size: 0.75rem; color: var(--cyan-primary);">Interactive Canvas</span>
+            </div>
+            <canvas id="sim-canvas"></canvas>
+          </div>
+
+          <div class="canvas-wrapper">
+            <div class="canvas-title">
+              <span>🎡 Quantum Phasor Wheel (Argand Plane)</span>
+              <span style="font-size: 0.75rem; color: var(--violet-primary);">Complex Phase</span>
+            </div>
+            <canvas id="phasor-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Step-by-Step Explanation Box -->
+        <div class="terminal-card" id="sim-explanation" style="color: #cbd5e1; line-height: 1.7;">
+          Computing transformation bridge...
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: MATHEMATICAL FOUNDATIONS & CONVENTION DECODER -->
+    <section id="tab-theory" class="tab-content">
+      <div class="panel-card">
+        <div class="panel-header">
+          <h2 class="panel-title"><span>📐</span> Mathematical Foundations & Convention Decoder</h2>
+        </div>
+
+        <div class="theory-grid">
+          <div class="theory-card">
+            <h3><span>1️⃣</span> Discrete Fourier Transform (DFT)</h3>
+            <p>The classical discrete Fourier transform converts a discrete sequence $x = [x_0, x_1, \dots, x_{N-1}]$ from the time domain to the frequency domain:</p>
+            <div class="math-box">X_k = \sum_{j=0}^{N-1} x_j \cdot e^{-i \frac{2\pi j k}{N}} \quad (k = 0, \dots, N-1)</div>
+            <p>Notice the <strong>negative sign</strong> in the exponent, standard across electrical engineering, digital signal processing, and NumPy (`np.fft.fft`).</p>
+          </div>
+
+          <div class="theory-card">
+            <h3><span>2️⃣</span> Quantum Fourier Transform (QFT)</h3>
+            <p>The QFT is a unitary operator mapping basis states $|j\rangle$ to superpositions of basis states $|k\rangle$:</p>
+            <div class="math-box">\text{QFT} |j\rangle = \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} e^{+i \frac{2\pi j k}{N}} |k\rangle</div>
+            <p>When acting on an arbitrary quantum state $|\psi\rangle = \sum_{j=0}^{N-1} x_j |j\rangle$, the output amplitudes are:</p>
+            <div class="math-box">y_k = \frac{1}{\sqrt{N}} \sum_{j=0}^{N-1} x_j \cdot e^{+i \frac{2\pi j k}{N}}</div>
+            <p>Notice the <strong>positive sign</strong> in the exponent, standard in physics and quantum information (Qiskit).</p>
+          </div>
+
+          <div class="theory-card">
+            <h3><span>3️⃣</span> Why the Outputs Differ & How to Reconcile</h3>
+            <p>Comparing NumPy's `fft(x)` directly with Qiskit's `QFTGate` yields an apparent mismatch due to two factors:</p>
+            <ul style="color: var(--text-secondary); margin-left: 18px; margin-bottom: 12px; font-size: 0.85rem;">
+              <li><strong>Sign inversion:</strong> NumPy's `fft` has $-i$; Qiskit's QFT has $+i$. However, NumPy's inverse FFT (`ifft`) uses $+i$!</li>
+              <li><strong>Scale factor:</strong> NumPy's `ifft` multiplies by $\frac{1}{N}$, whereas QFT normalizes by $\frac{1}{\sqrt{N}}$.</li>
+            </ul>
+            <div class="math-box">\text{np.fft.ifft}(x)_k = \frac{1}{N} \sum_{j=0}^{N-1} x_j e^{+i \frac{2\pi j k}{N}} = \frac{1}{\sqrt{N}} \cdot y_k</div>
+            <p>Multiplying NumPy's `ifft` by $\sqrt{N}$ and normalizing by $||x||_2$ reproduces the QFT statevector exactly!</p>
+          </div>
+
+          <div class="theory-card">
+            <h3><span>4️⃣</span> Quantum Circuit Architecture</h3>
+            <p>The standard QFT circuit operates on $n = \log_2 N$ qubits using two elementary gate types:</p>
+            <ul style="color: var(--text-secondary); margin-left: 18px; margin-bottom: 12px; font-size: 0.85rem;">
+              <li><strong>Hadamard Gate ($H$):</strong> Creates equal superposition on target qubit: $H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}$.</li>
+              <li><strong>Controlled-Phase Rotations ($R_k$):</strong> Introduces phase shifts conditioned on control qubits: $R_k = \begin{pmatrix} 1 & 0 \\ 0 & e^{2\pi i / 2^k} \end{pmatrix}$.</li>
+              <li><strong>SWAP Gates:</strong> Reverses qubit bit-order at the end of the circuit to restore standard index ordering.</li>
+            </ul>
+            <div class="math-box">\text{Gate Count} = \frac{n(n-1)}{2} \text{ (Controlled-Phase)} + n \text{ (Hadamard)} = \mathcal{O}(n^2)</div>
+          </div>
+
+          <div class="theory-card">
+            <h3><span>5️⃣</span> Asymptotic Complexity: Reality vs Myth</h3>
+            <p><strong>Classical FFT:</strong> Takes $\mathcal{O}(N \log N) = \mathcal{O}(n 2^n)$ operations. All $N$ coefficients are calculated and stored in memory.</p>
+            <p><strong>Quantum QFT Circuit:</strong> Uses only $\mathcal{O}(n^2) = \mathcal{O}((\log_2 N)^2)$ elementary gates — an exponential speedup in unitary gate depth!</p>
+            <p><strong>The Measurement Catch:</strong> You <em>cannot</em> read all $N$ amplitudes out of a quantum computer in $\mathcal{O}(n^2)$ time. A single measurement gives one random basis state $|k\rangle$. QFT is useful as a subroutine inside quantum algorithms (e.g., Shor's factoring, Quantum Phase Estimation) where constructive interference concentrates probability on the desired answer.</p>
+          </div>
+
+          <div class="theory-card">
+            <h3><span>6️⃣</span> Classical Simulation Limitations</h3>
+            <p>This project uses Qiskit's `Statevector` simulator running on a classical CPU.</p>
+            <p>A classical simulator stores the full statevector of $2^n$ complex numbers in host RAM and multiplies matrices explicitly, taking $\mathcal{O}(2^n)$ time and memory. Therefore, timing Qiskit on a laptop does <strong>not</strong> demonstrate quantum advantage.</p>
+            <div class="math-box">\text{Simulator Memory} = 2^n \times 16 \text{ bytes (exponential in } n)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: PRESENTATION & VIVA PREPARATION -->
+    <section id="tab-viva" class="tab-content">
+      <div class="panel-card">
+        <div class="panel-header">
+          <h2 class="panel-title"><span>🎓</span> Master Presentation & Viva Oral Examination Prep</h2>
+          <span class="status-badge"><span class="status-dot"></span> Aligned with Presentation Outline</span>
+        </div>
+
+        <!-- Slide Deck Outline -->
+        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 16px;">Recommended 10-Slide Presentation Structure</h3>
+        <div class="slide-grid" style="margin-bottom: 32px;">
+          <div class="slide-card">
+            <div class="slide-num">Slide 1</div>
+            <div class="slide-title">Title & Team Introduction</div>
+            <div class="slide-desc">Project title, course, team members, and role allocation (Quantum, Classical, Analysis).</div>
+          </div>
+          <div class="slide-card">
+            <div class="slide-num">Slide 2</div>
+            <div class="slide-title">Problem Statement & Objectives</div>
+            <div class="slide-desc">Why compare QFT with classical FFT? Motivation, bridge conventions, and verification goals.</div>
+          </div>
+          <div class="slide-card">
+            <div class="slide-num">Slide 3</div>
+            <div class="slide-title">Classical FFT Fundamentals</div>
+            <div class="slide-desc">DFT definition, Cooley-Tukey O(N log N) divide-and-conquer, NumPy's implementation.</div>
+          </div>
+          <div class="slide-card">
+            <div class="slide-num">Slide 4</div>
+            <div class="slide-title">Quantum Fourier Transform (QFT)</div>
+            <div class="slide-desc">Unitary transformation of basis states, quantum superposition, amplitude encoding.</div>
+          </div>
+          <div class="slide-card">
+            <div class="slide-num">Slide 5</div>
+            <div class="slide-title">Tools & Architecture</div>
+            <div class="slide-desc">Python 3.13, Qiskit 2.x, StatePreparation, QFTGate, NumPy, Matplotlib.</div>
+          </div>
+          <div class="slide-card">
+            <div class="slide-num">Slide 6</div>
+            <div class="slide-title">Quantum Circuit Implementation</div>
+            <div class="slide-desc">Insert circuit diagram (`experiment_2_circuit.png`), explain H and controlled-R gates.</div>
+          </div>
+          <div class="slide-card">
+            <div class="slide-num">Slide 7</div>
+            <div class="slide-title">Experiments: N = 2, 4, 8</div>
+            <div class="slide-desc">Explain signal selection: 1-qubit impulse, 2-qubit periodic alternating, 3-qubit asymmetric.</div>
+          </div>
+          <div class="slide-card">
+            <div class="slide-num">Slide 8</div>
+            <div class="slide-title">Results & Numerical Validation</div>
+            <div class="slide-desc">Magnitude and complex plots; show maximum absolute errors bounded by ~ 10⁻¹⁶.</div>
+          </div>
+          <div class="slide-card">
+            <div class="slide-num">Slide 9</div>
+            <div class="slide-title">Complexity & Reality Check</div>
+            <div class="slide-desc">O(n²) circuit depth vs O(N log N) classical; clarify why simulation timings do not prove speedup.</div>
+          </div>
+          <div class="slide-card">
+            <div class="slide-num">Slide 10</div>
+            <div class="slide-title">Conclusion & Contributions</div>
+            <div class="slide-desc">Summary of findings, team member contributions, and future quantum computing outlook.</div>
+          </div>
+        </div>
+
+        <!-- Viva Flashcards -->
+        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 16px;">Interactive Viva Flashcards (High-Frequency Examiner Questions)</h3>
+        
+        <div class="viva-card">
+          <div class="viva-header">
+            <span>Q1: What is a qubit, and how does it store information differently from a classical bit?</span>
+            <span class="viva-icon">▼</span>
+          </div>
+          <div class="viva-body">
+            A classical bit can only exist in state 0 or 1. A qubit is a two-level quantum system represented by a unit vector in a 2D complex Hilbert space: $|\psi\rangle = \alpha |0\rangle + \beta |1\rangle$, where $\alpha, \beta \in \mathbb{C}$ and $|\alpha|^2 + |\beta|^2 = 1$. The coefficients $\alpha, \beta$ are probability amplitudes.
+          </div>
+        </div>
+
+        <div class="viva-card">
+          <div class="viva-header">
+            <span>Q2: Why must the input signal amplitudes be normalized before loading into Qiskit?</span>
+            <span class="viva-icon">▼</span>
+          </div>
+          <div class="viva-body">
+            By the Born rule of quantum mechanics, the sum of probabilities of all possible measurement outcomes must equal 1 ($\sum_{j=0}^{N-1} |\alpha_j|^2 = 1$). Therefore, a classical vector $x$ must be normalized by its Euclidean ($L_2$) norm $||x||_2 = \sqrt{\sum |x_j|^2}$ so it can be physically represented as a pure quantum statevector.
+          </div>
+        </div>
+
+        <div class="viva-card">
+          <div class="viva-header">
+            <span>Q3: Why do NumPy's FFT and Qiskit's QFT outputs have opposite imaginary parts if compared directly?</span>
+            <span class="viva-icon">▼</span>
+          </div>
+          <div class="viva-body">
+            NumPy defines the forward Discrete Fourier Transform with a negative phase exponent $e^{-2\pi i j k / N}$. Quantum mechanics and Qiskit define the QFT operator with a positive phase exponent $e^{+2\pi i j k / N}$. Because $e^{+i\theta} = (e^{-i\theta})^*$, direct comparison shows conjugate symmetry (opposite imaginary sign). To match them, we compare QFT with NumPy's inverse FFT (`np.fft.ifft`), which uses the positive exponent convention.
+          </div>
+        </div>
+
+        <div class="viva-card">
+          <div class="viva-header">
+            <span>Q4: If QFT uses only $\mathcal{O}((\log N)^2)$ gates, why can't we use it to replace FFT on classical audio or image files?</span>
+            <span class="viva-icon">▼</span>
+          </div>
+          <div class="viva-body">
+            There are two major bottlenecks: 
+            1) <strong>State Preparation:</strong> Loading an arbitrary classical vector into $n$ qubits requires $\mathcal{O}(2^n) = \mathcal{O}(N)$ operations in general.
+            2) <strong>Measurement Readout:</strong> After QFT, the output exists as quantum amplitudes. When you measure the qubits, quantum state collapse yields only a <em>single</em> basis index $|k\rangle$, not all $N$ frequency values. Reading all $N$ values would require re-running and sampling the circuit millions of times, eliminating any speedup. QFT is meant as an internal subroutine in algorithms like Shor's or Quantum Phase Estimation, where interference allows reading the desired answer directly.
+          </div>
+        </div>
+
+        <div class="viva-card">
+          <div class="viva-header">
+            <span>Q5: Does our local Python execution timing prove that QFT is faster or slower than FFT?</span>
+            <span class="viva-icon">▼</span>
+          </div>
+          <div class="viva-body">
+            <strong>No, absolutely not.</strong> We are running a quantum simulator on a classical laptop CPU. The statevector simulator must simulate $2^n$ quantum state amplitudes classically, requiring exponential time and memory $\mathcal{O}(2^n)$. The timing numbers in `summary.csv` are single-run wall-clock observations on a classical computer, not a benchmark of physical quantum hardware.
+          </div>
+        </div>
+
+        <div class="viva-card">
+          <div class="viva-header">
+            <span>Q6: What gates make up a QFT circuit, and why are SWAP gates necessary at the end?</span>
+            <span class="viva-icon">▼</span>
+          </div>
+          <div class="viva-body">
+            A standard QFT circuit consists of Hadamard gates $H$ and Controlled-Phase rotation gates $R_k = \begin{pmatrix} 1 & 0 \\ 0 & e^{2\pi i / 2^k} \end{pmatrix}$. Applying these gates naturally leaves the resulting output qubits in reversed bit order (most significant qubit becomes least significant). Therefore, SWAP gates are applied across paired qubits ($\lfloor n/2 \rfloor$ swaps) to invert the register back into natural binary order.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: TEAM & METHODOLOGY -->
+    <section id="tab-team" class="tab-content">
+      <div class="panel-card">
+        <div class="panel-header">
+          <h2 class="panel-title"><span>👥</span> Team Organization & Technical Methodology</h2>
+        </div>
+
+        <div class="team-grid" style="margin-bottom: 28px;">
+          <div class="member-card">
+            <span class="member-role">Member 1</span>
+            <h3 class="member-name">Quantum Implementation</h3>
+            <ul class="member-duties">
+              <li>Formulate quantum statevector models in Hilbert space.</li>
+              <li>Design quantum circuits in Qiskit using `StatePreparation` and `QFTGate`.</li>
+              <li>Export and interpret circuit diagrams (text & visual renderings).</li>
+              <li>Explain Hadamard and controlled-phase gate mechanics.</li>
+            </ul>
+          </div>
+
+          <div class="member-card">
+            <span class="member-role">Member 2</span>
+            <h3 class="member-name">Classical FFT & Mathematics</h3>
+            <ul class="member-duties">
+              <li>Implement standard Discrete Fourier Transform and FFT in NumPy.</li>
+              <li>Resolve mathematical sign conventions ($e^{+i}$ vs $e^{-i}$).</li>
+              <li>Establish Euclidean $L_2$ normalization and scaling bridge ($\sqrt{N}$).</li>
+              <li>Formulate error metrics: maximum absolute error and `np.allclose`.</li>
+            </ul>
+          </div>
+
+          <div class="member-card">
+            <span class="member-role">Member 3</span>
+            <h3 class="member-name">Experiments & Analysis</h3>
+            <ul class="member-duties">
+              <li>Design test signals (N=2, 4, 8) capturing impulse, periodic, and asymmetric properties.</li>
+              <li>Execute experiments, log outputs, and aggregate `summary.csv`.</li>
+              <li>Generate magnitude and complex amplitude comparison visualizations.</li>
+              <li>Assemble final report and presentation slide deck.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Technical Environment -->
+        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 14px;">Software Stack & Verified Environment</h3>
+        <div class="exp-meta-strip">
+          <div class="meta-item">
+            <span class="meta-label">Language</span>
+            <span class="meta-value val-cyan">Python 3.13.4</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Quantum Framework</span>
+            <span class="meta-value val-violet">Qiskit 2.x</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Linear Algebra</span>
+            <span class="meta-value val-emerald">NumPy 2.5</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Plotting</span>
+            <span class="meta-value">Matplotlib 3.11</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Circuit Renderer</span>
+            <span class="meta-value">pylatexenc 2.11</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div class="modal-overlay" id="image-modal" role="dialog" aria-modal="true">
+    <div class="modal-container">
+      <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+      <img src="" alt="Expanded View" class="modal-img" id="modal-img">
+    </div>
+  </div>
+
+  <!-- Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>

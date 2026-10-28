@@ -1,0 +1,21 @@
+Experiment: experiment_3
+Input signal: [1.+0.j 2.+0.j 0.+0.j 1.+0.j 0.+0.j 1.+0.j 0.+0.j 0.+0.j]
+Number of input values: 8
+Number of qubits: 3
+
+Classical FFT: [ 5.+0.j        1.-1.414214j  1.-2.j        1.-1.414214j -3.+0.j
+  1.+1.414214j  1.+2.j        1.+1.414214j]
+QFT amplitudes: [ 0.668153-8.995767e-17j  0.133631+1.889822e-01j  0.133631+2.672612e-01j
+  0.133631+1.889822e-01j -0.400892+3.397607e-16j  0.133631-1.889822e-01j
+  0.133631-2.672612e-01j  0.133631-1.889822e-01j]
+Expected QFT amplitudes: [ 0.668153+0.j        0.133631+0.188982j  0.133631+0.267261j
+  0.133631+0.188982j -0.400892+0.j        0.133631-0.188982j
+  0.133631-0.267261j  0.133631-0.188982j]
+
+Maximum absolute error: 5.0267485386e-16
+Validation: PASS
+Classical FFT wall-clock time (one run): 0.00006790 seconds
+Statevector simulation wall-clock time (one run): 0.00464830 seconds
+
+Timing note: these are single local runs and are not a fair quantum-vs-classical speed benchmark.
+The statevector simulator runs on a classical computer.
